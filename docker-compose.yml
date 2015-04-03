@@ -1,0 +1,18 @@
+entry:
+  build: entry/
+  ports:
+    - "49400:80"
+  links:
+    - rabbitmq
+
+board:
+  build: board/
+  links:
+    - rabbitmq
+
+dictionary:
+    build: dictionary/
+
+rabbitmq:
+  image: rabbitmq 
+
