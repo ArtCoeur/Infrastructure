@@ -10,33 +10,45 @@ board:
   links:
     - rabbitmq
 
-eventfilter:
-  build: event-filter/
+mostsolved:
+  build: most-solved/
   links:
     - rabbitmq
-    - logstash
+    - dictionary
 
 dictionary:
-    build: dictionary/
+  build: dictionary/
+  ports:
+      - "8081:80"
 
 rabbitmq:
   image: rabbitmq 
 
-es:
-  image: clusterhq/elasticsearch
+elasticsearch:
+  image: deviantony/elk-elasticsearch
   ports:
     - "9200:9200"
 
 logstash:
-  image: clusterhq/logstash
+  image: deviantony/elk-logstash
+  volumes:
+    - logstash-conf:/etc/logstash/conf.d
   ports:
-    - "5000:5000"
+    - "5000:5000"  
   links:
-    - es
+    - elasticsearch
+    - rabbitmq
 
-kibana:
-  image: clusterhq/kibana
+kibana3:
+  image: deviantony/elk-kibana:kibana3
   ports:
-    - "8080:8080"
+    - "8080:80"
   links:
-    - es
+    - elasticsearch
+
+kibana4:
+  image: deviantony/elk-kibana
+  ports:
+    - "5601:5601"
+  links:
+    - elasticsearch
