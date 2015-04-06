@@ -10,11 +10,17 @@ board:
   links:
     - rabbitmq
 
+pattern:
+  build: pattern/
+  ports:
+      - "8082:80"
+
 mostsolved:
   build: most-solved/
   links:
     - rabbitmq
     - dictionary
+    - pattern
 
 dictionary:
   build: dictionary/
